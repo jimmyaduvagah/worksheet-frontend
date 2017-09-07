@@ -1,0 +1,56 @@
+<div class="col-md-8 col-md-offset-2"><div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>Welcome to</h1>
+            <img class="img-responsive" src="assets/images/TimeStream-v1-red.png" />
+            <br />
+        </div>
+    </div>
+
+    <hr />
+
+    <as-loading *ngIf="loading"></as-loading>
+    <div *ngIf="errorMsg" class="alert alert-danger alert-dismissable text-center">{{errorMsg}}</div>
+
+    <form name="loginForm" class="form-horizontal" #loginForm="ngForm" [ngStyle]="{'display': loading?'none':''}">
+        <div class="form-group">
+            <label for="username" class="col-sm-2 col-sm-offset-2 control-label">Username</label>
+            <div class="col-sm-4">
+                <input name="username"
+                       id="username"
+                       placeholder="username"
+                       class="form-control"
+                       [(ngModel)]="username"
+                       required
+                       autocorrect="off"
+                       autocapitalize="none">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-sm-2 col-sm-offset-2 control-label">Password</label>
+            <div class="col-sm-4">
+                <input name="password"
+                       id="password"
+                       type="password"
+                       placeholder="password"
+                       class="form-control"
+                       [(ngModel)]="password"
+                       required>
+            </div>
+        </div>
+        <!--<div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox"> Remember me
+              </label>
+            </div>
+          </div>
+        </div>-->
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-10">
+                <button (click)="login()" [disabled]="loginForm.form.valid == false" type="submit" class="btn btn-primary">Log in</button>
+                <button [routerLink]="['/auth/forgot-password']" class="btn btn-default">Forgot Password?</button>
+            </div>
+        </div>
+    </form>
+</div>

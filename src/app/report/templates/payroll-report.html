@@ -1,0 +1,84 @@
+<ol class="breadcrumb">
+    <li><a [routerLink]="['/admin/dashboard']">Admin</a></li>
+    <li><a [routerLink]="['/admin/reports']">Reports</a></li>
+</ol>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12  col-md-12 col-lg-12">
+            <div><h4 class="headline">Choose a pay period to view the time sheets </h4></div>
+            <br/>
+            <as-loading *ngIf="loadingRanges"></as-loading>
+            <div class="row" *ngIf="!loadingRanges">
+                <div class="col-lg-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"> Report Type</span>
+                        <select class="form-control" [(ngModel)]="reportType">
+                            <option value="payroll">Payroll</option>
+                            <option value="billing">Billing</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"> Year</span>
+                        <input type="number" class="form-control" [(ngModel)]="year">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"> Month </span>
+                        <input type="number" class="form-control" [(ngModel)]="month" min="1" max="12">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-info floating-div " (click)="getPayPeriodRanges()">
+                        Get Pay Period Ranges
+                    </button>
+                </div>
+                <div class="col-lg-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">Pay Period</span>
+                        <select class="form-control" id="payperiod" name="payperiod" [ngModel]="selectedPeriodIndex"
+                                (change)="rangeSelected($event)">
+                            <option *ngFor="let period of payperiodListResponse; let index = index" [value]="index">
+                                <b>{{period.start_date}} - {{period.end_date}}</b>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <button class="btn btn-danger floating-div" (click)="getPayrollPayPeriod()"
+                            [disabled]="!selectedPeriod">Get Report
+                    </button>
+                </div>
+            </div>
+            <as-loading *ngIf="loadingPayPeriods"></as-loading>
+            <div *ngIf="!loadingPayPeriods && payrollListResponse" style="margin-top: 20px;">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th style="width: 15%"> Employee</th>
+                            <th style="width: 15%"> Designation</th>
+                            <th style="width: 17%"> Days Worked</th>
+                            <th style="width: 17%"> Total Hours</th>
+                            <th style="width: 15%"> Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of payrollListResponse">
+                            <td>{{ item.user.first_name }} {{ item.user.last_name }}</td>
+                            <td>{{ item.job }}</td>
+                            <td>{{ item.days_worked }}</td>
+                            <td>{{ item.total_hours }}</td>
+                            <td>{{ item.status_display }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

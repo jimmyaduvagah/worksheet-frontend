@@ -1,0 +1,67 @@
+
+<ol class="breadcrumb">
+    <li><a [routerLink]="['/jobs']">Jobs</a></li>
+    <li class="active " *ngIf="!loading" >
+        <!--<img class="img-circle" style="width: 25px; height: 25px;"-->
+             <!--[src]="_settingsService.getUploadBase() + job.user.userprofile.user_image"-->
+        <!--&gt;-->
+        {{ job.job_title }} at {{ job.company }}
+    </li>
+</ol>
+<as-loading *ngIf="loading"></as-loading>
+
+<div *ngIf="!loading" class="job-listing">
+    <div class="row">
+        <div class="col-md-8 col-md-push-2">
+            <h1 class="">
+                <!--<img class="img-circle"-->
+                     <!--style="width: 50px; height: 50px; margin-right: 10px;"-->
+                     <!--[src]="_settingsService.getUploadBase() + job.user.userprofile.user_image"-->
+                <!--&gt;-->
+
+                {{ job.user.getName() }}
+                <small class="">{{ job.job_title }} at {{ job.company }}</small>
+                <i style="vertical-align: text-bottom; margin-bottom: 5px;"
+                   class="badge badge-assertive ">{{ job.is_ended?'Job Finished':'' }}</i>
+            </h1>
+
+            <table class="table">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <th>Current Pay Period</th>
+                    <td *ngIf="job.pay_periods.length > 0">
+                        {{ job.pay_periods[0].start_date }} - {{ job.pay_periods[0].end_date }}
+                        &nbsp;
+                        <button class="btn btn-xs btn-primary" [routerLink]="['/pay-period/' + job.pay_periods[0].id + '/work-times/' ]">
+                            View <i class="fa fa-chevron-right"></i>
+                        </button >
+                    </td>
+                </tr>
+                <tr>
+                    <th>Pay Period Frequency</th>
+                    <td>{{ job.pay_period_type.name }}</td>
+                </tr>
+                <tr>
+                    <th>Hours Per Day</th>
+                    <td>{{ job.work_day_hours }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <hr>
+            <div class="col-md-4 col-md-push-4">
+                <a class="btn btn-default btn-block" [routerLink]="['/jobs/' + job.id + '/pay-periods']">
+                    View All Pay Periods <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+

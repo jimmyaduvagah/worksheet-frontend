@@ -1,0 +1,125 @@
+$worktime-day-width: 14.28%;
+
+
+/*==========  defaults  ==========*/
+
+
+.worktime-week-container {
+  border-bottom: solid $gray-lighter 1px;
+}
+
+/*==========  Mobile First Method  ==========*/
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width : 320px) {
+
+}
+
+/* Extra Small Devices, Phones */
+@media only screen {
+  .worktime-card-container {
+    width: 100%;
+    float: none;
+    display: block;
+    padding: 0 2.5px;
+    vertical-align: top;
+    font-size: 100%;
+
+    .comment-button {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      background: transparent;
+      padding: 3px 7px;
+    }
+
+    select {
+      color: #666;
+      background: transparent;
+      border: none;
+      -webkit-border-radius:0;
+      -moz-border-radius:0;
+      border-radius:0;
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .hours-input-container {
+      text-align: right;
+      input {
+        border: none;
+        width: 45%;
+        font-size: 24px;
+        font-weight: 400;
+        //color: $brand-primary !important;
+        text-align: right;
+        margin-bottom: 10px;
+
+        &:focus {
+          outline: none;
+        }
+      }
+      span {
+        width:50%;
+      }
+    }
+
+
+    .panel-body {
+      padding-bottom:0;
+
+      .hours-bar-container {
+        width:auto;
+        margin:0 -15px;
+      }
+
+    }
+  }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+  .worktime-card-container {
+    width: 25%;
+    display: inline-block;
+    font-size: 90%;
+    //padding: 0 10px;
+  }
+  //.worktime-week-container {
+  //  width: 50%;
+  //  float: left;
+  //  padding: 0 20px;
+  //  border: solid $gray-lighter 1px;
+  //}
+  //.worktime-week-container:nth-child(odd) {
+  //  border-left: none;
+  //}
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+  //.worktime-week-container {
+  //  border-bottom: solid $gray-lighter 1px;
+  //  width: 100%;
+  //}
+  .worktime-card-container {
+    width: $worktime-day-width;
+    display: inline-block;
+    font-size: 100%;
+    //padding: 0 10px;
+  }
+  @for $i from 1 through 7 {
+    .worktime-card-container-padding-#{$i} {
+      width: ($worktime-day-width * $i);
+      display: inline-block;
+      padding: 0 2.5px;
+    }
+  }
+
+}

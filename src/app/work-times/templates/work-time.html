@@ -1,0 +1,97 @@
+<div class="panel" #panel [ngClass]="{'panel-warning': warningMsg, 'panel-danger': errorMsg, 'panel-default': !warningMsg || !errorMsg}">
+    <div class="panel-heading relative">{{workTime.dateObj | date: 'EEE d, MMM y'}}
+        <button (click)="worktimeCommentModal.showModal()" class="btn btn-default btn-xs comment-button">
+            <i class="fa fa-comment"></i>
+            <span class="label label-success" *ngIf="messageCount > 0">
+                {{ messageCount }}
+            </span>
+        </button>
+    </div>
+    <div class="panel-body">
+        <as-work-time-reasons
+                [(ngModel)]="workTime.absence_reason_id"
+                (change)="changed()"
+                [disabled]="!isMyJob || locked || payPeriod.status != 'NS'"
+                [countryId]="payPeriod.user.userprofile.address_country"
+        >
+        </as-work-time-reasons>
+        <div class="hours-input-container">
+            <input
+                    placeholder="0"
+                    (focus)="highlightHours($event)"
+                    (blur)="changed()"
+                    (keypress)="changed()"
+                    [(ngModel)]="workTime.hours"
+                    [disabled]="!isMyJob || locked || payPeriod.status != 'NS'"
+            /> <span>Hours</span>
+        </div>
+        <as-hours-bar [percent]="workTime.hours / defaultHours"></as-hours-bar>
+    </div>
+    <div class="panel-footer" *ngIf="warningMsg || errorMsg" >
+        <div class="error-msg msg" *ngIf="errorMsg" >
+            {{ errorMsg }}
+        </div>
+        <div class="warning-msg msg" *ngIf="warningMsg" >
+            {{ warningMsg }}
+        </div>
+    </div>
+</div>
+<as-modal-worktime-comment
+        [isMyJob]="isMyJob"
+        [iAmTheApprover]="iAmTheApprover"
+        [workTime]="workTime"
+        [locked]="locked || payPeriod.status != 'NS'"
+        [head]="'Comments for ' + (workTime.dateObj | date: 'EEE d, MMM y')"
+        (save)="commentSaved($event)"
+        #worktimeCommentModal
+></as-modal-worktime-comment>
+
+<!--<td class="work-time-day">-->
+    <!--<as-loading *ngIf="loading" [size]="20" [minHeight]="20"></as-loading>-->
+    <!--{{workTime.dateObj | date: 'EEE d, MMM y'}}-->
+<!--</td>-->
+<!--<td>-->
+    <!--<input-->
+        <!--class="borderLess"-->
+        <!--placeholder="0"-->
+        <!--(focus)="highlightHours($event)"-->
+        <!--(blur)="changed()"-->
+        <!--(keypress)="changed()"-->
+        <!--[(ngModel)]="workTime.hours"-->
+        <!--[disabled]="!isMyJob"-->
+    <!--/>-->
+    <!--<as-hours-bar [percent]="workTime.hours / defaultHours"></as-hours-bar>-->
+<!--</td>-->
+
+
+<!--<td class="dropdown">-->
+    <!--<as-work-time-reasons [(ngModel)]="workTime.absence_reason_id" (change)="changed()"-->
+                          <!--[disabled]="!isMyJob"-->
+    <!--&gt;</as-work-time-reasons>-->
+<!--</td>-->
+<!--<td>-->
+    <!--<textarea-->
+            <!--class="borderLess"-->
+            <!--[placeholder]="isMyJob?'Enter a comment':''"-->
+            <!--[(ngModel)]="workTime.user_comment"-->
+            <!--(blur)="changed()"-->
+            <!--(change)="changed()"-->
+            <!--(keypress)="changed()"-->
+            <!--as-elastic-->
+            <!--rows="1"-->
+            <!--[disabled]="!isMyJob"-->
+    <!--&gt;</textarea>-->
+<!--</td>-->
+<!--<td>-->
+    <!--<textarea-->
+            <!--class="borderLess"-->
+            <!--[placeholder]="iAmTheApprover?'Enter a comment':''"-->
+            <!--[(ngModel)]="workTime.approver_comment"-->
+            <!--(blur)="changed()"-->
+            <!--(change)="changed()"-->
+            <!--(keypress)="changed()"-->
+            <!--as-elastic-->
+            <!--rows="1"-->
+            <!--[disabled]="!iAmTheApprover"-->
+    <!--&gt;</textarea>-->
+<!--</td>-->

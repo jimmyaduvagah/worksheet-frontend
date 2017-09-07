@@ -1,0 +1,56 @@
+<as-loading *ngIf="loading"></as-loading>
+<div *ngIf="!loading">
+    <div *ngFor="let week of weeks; let weekIndex = index" class="worktime-week-container">
+        <h3>Week {{ week.weekNumber }} | {{ countWeekHours(week) }} / {{ countExpectedWeekHours(week) }}</h3>
+        <div class="row">
+
+            <div *ngIf="weekIndex == 0" ngClass="worktime-card-container-padding-{{paddingDays}}"></div>
+            <div class="worktime-card-container"
+                 *ngFor="let workTime of week.workTimes; let index = index"
+                 as-work-time
+                 [iAmTheApprover]="iAmTheApprover"
+                 [isMyJob]="isMyJob"
+                 [payPeriod]="payPeriod"
+                 [defaultHours]="defaultHours"
+                 [showOnlyDaysWithNoHours]="showOnlyDaysWithNoHours"
+                 [(workTime)]="week.workTimes[index]"
+                 (workTimeUpdated)="workTimeChanged($event)"
+            >
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--<table class="table" *ngFor="let week of weeks">-->
+        <!--<tr>-->
+            <!--<th>Day</th>-->
+            <!--<th>Hours</th>-->
+            <!--<th>Reason</th>-->
+            <!--<th>User Comments</th>-->
+            <!--<th>Admin Comments</th>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td>Week {{ week.weekNumber }}</td>-->
+            <!--<td>{{ countWeekHours(week) }} / {{ week.expectedHours }}</td>-->
+            <!--<td></td> &lt;!&ndash; these three blank td's just keep bootstrap table looking nice &ndash;&gt;-->
+            <!--<td></td>-->
+            <!--<td></td>-->
+        <!--</tr>-->
+        <!--<tr-->
+                <!--as-work-time-->
+                <!--[iAmTheApprover]="iAmTheApprover"-->
+                <!--[isMyJob]="isMyJob"-->
+                <!--[defaultHours]="defaultHours"-->
+                <!--*ngFor="let workTime of week.workTimes; let index = index"-->
+                <!--[showOnlyDaysWithNoHours]="showOnlyDaysWithNoHours"-->
+                <!--[workTime]="workTime"-->
+                <!--(workTimeChange)="workTimeChanged($event)"-->
+        <!--&gt;-->
+        <!--</tr>-->
+    <!--</table>-->
+
+    <pre>
+        {{workTimes | json}}
+    </pre>
+</div>

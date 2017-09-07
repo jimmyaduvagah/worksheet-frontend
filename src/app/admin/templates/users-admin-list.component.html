@@ -1,0 +1,54 @@
+<ol class="breadcrumb">
+    <li><a [routerLink]="['/admin/dashboard']">Admin</a></li>
+    <li class="active " *ngIf="!loading"> Employees List</li>
+</ol>
+
+<div class="container inner-container">
+    <div class="col-sm-8  col-md-12 col-lg-12 ">
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+                <div class="pull-left"><h3>Employees</h3></div>
+                    <div class="row">
+                        <div class="col-sm-3 col-sm-offset-6">
+                            <div *ngIf="!loading">
+                                <div class="input-group stylish-input-group">
+                                    <input type="text" class="form-control" [(ngModel)]="searchTerm"
+                                           placeholder="Search Name" (keyup.enter)="search(searchTerm)">
+                                    <span class="input-group-addon">
+                        <button type="button" (click)="search(searchTerm)">
+                            <span class="fa fa-search"></span>
+                        </button>
+                          </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="panel-body">
+                <div *ngIf="!loading">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th style="..."> User Name</th>
+                            <th style="..."> First Name</th>
+                            <th style="..."> Last Name</th>
+                            <th style="..."> Email</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of userResponse.results">
+                            <td>{{ item.username }}</td>
+                            <td> {{ item.first_name }}</td>
+                            <td> {{ item.last_name }}</td>
+                            <td>{{ item.email }}</td>
+                            <a class="btn btn-default" [routerLink]="['/admin/user/'  + item.id]">
+                                 <i class="fa fa-arrow-right"></i> </a>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

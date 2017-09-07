@@ -1,0 +1,118 @@
+<ol class="breadcrumb">
+    <li><a [routerLink]="['/jobs']">Jobs</a></li>
+    <li *ngIf="!loading" >
+        <!--<img class="img-circle" style="width: 25px; height: 25px;"-->
+             <!--ng-src="https://api-timestream.prospect33.com/static/uploads/profile_images/user_2_y2A1UPH.jpg"-->
+             <!--src="https://api-timestream.prospect33.com/static/uploads/profile_images/user_2_y2A1UPH.jpg">-->
+        <a [routerLink]="['/jobs/' + job.id]">{{ job.job_title }} at {{ job.company }}</a>
+    </li>
+    <li *ngIf="!loading" ><a [routerLink]="['/jobs/' + job.id + '/pay-periods']">Pay Periods</a></li>
+    <li class="active ">Pay Period</li>
+</ol>
+
+<as-loading *ngIf="loading"></as-loading>
+<div *ngIf="!loading">
+
+    <div class="alert alert-danger hidden-print" *ngIf="payPeriod.status == 'NS' && payPeriod.latest_message.type"
+         id="reason_alert">
+        <p><b>{{ payPeriod.latest_message.type }}</b> <span class="small">from {{ payPeriod.latest_message.created_by.first_name }} {{ payPeriod.latest_message.created_by.last_name }}</span>
+        </p>
+
+        <p>{{ payPeriod.latest_message.message }}</p>
+    </div>
+
+    <div class="alert alert-danger hidden-print" *ngIf="showReasonWithHoursNoCommentError"
+         id="reason-with-hours-no-comment-error-alert">
+        <p>Please ensure that if you have selected an absence reason and entered hours worked to include a comment.</p>
+    </div>
+
+    <div class="row" style="margin-bottom:10px;" *ngIf="payPeriod">
+        <div class="col-md-3 col-sm-6">
+            <span class="h4 text-muted"> Pay Period: </span>
+            <span> {{payPeriod.start_dateObj | date}} - {{payPeriod.end_dateObj | date}} </span>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <span class="h4 text-muted">Status:</span>
+            <span> {{ payPeriod.getStatus() }}</span>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <span class="h4 text-muted">Total Hours: </span>
+            <span>{{ payPeriod.total_hours | number:'1.2-2' }} / {{ totalExpectedHours }}</span>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <span class="h4 text-muted">Actions: </span>
+
+            <!--<button class="btn btn-default btn-sm hidden-print" (click)="hideFilledInTimes = !hideFilledInTimes"-->
+                    <!--*ngIf="payPeriod.status == 'SU' || payPeriod.status == null">-->
+                <!--{{hideFilledInTimes == true ? 'Show All Days' : 'Show Only Days With No Time'}}-->
+            <!--</button>-->
+
+
+            <button class="btn btn-danger btn-sm hidden-print"
+                    *ngIf="payPeriod.status == 'SU' && user.userprofile.is_approver"
+                    (click)="rejectPayPeriod()">
+                Reject
+            </button>
+            <button class="btn btn-primary btn-sm hidden-print" *ngIf="payPeriod.status == 'NS' && payPeriod.locked != true"
+                    (click)="commentCheck()">
+                Submit
+            </button>
+            <button class="btn btn-success btn-sm hidden-print"
+                    *ngIf="payPeriod.status == 'SU' && user.userprofile.is_approver"
+                    (click)="approvePayPeriod()">
+                Approve
+            </button>
+            <button class="btn btn-sm hidden-print"
+                    [class.btn-danger]="payPeriod.locked==true"
+                    [class.btn-warning]="payPeriod.locked==false"
+                    *ngIf="user.userprofile.is_admin"
+                    (click)="togglePayPeriodLock()">
+                {{ payPeriod.locked==false?'Lock':'Un-Lock' }}
+            </button>
+
+            <button class="btn btn-danger btn-sm hidden-print"
+                    *ngIf="payPeriod.status == 'SU' && user.userprofile.is_admin && !payPeriod.locked"
+                    (click)="unSubmitPayPeriod()">
+                Un-Submit
+            </button>
+            
+        </div>
+
+    </div>
+    <div>
+        <as-work-time-list
+                #workTimes
+                [defaultHours]="defaultHours"
+                [payPeriod]="payPeriod"
+                [isMyJob]="isMyJobOrAdmin"
+                [iAmTheApprover]="isApprover"
+                [willSubmit]="willSubmit"
+                (worktimesChecked)="workTimesCheckCallback($event)"
+                (totalExpectedHours)="updateTotalExpectedHours($event)"
+                (totalHoursWorked)="updateTotalHoursWorked($event)"
+        >
+
+        </as-work-time-list>
+    </div>
+</div>
+<as-modal-tos-agree
+        [action]="tosAction"
+        [actionToDo]="actionToDo"
+        [user]="user"
+        [payPeriod]="payPeriod"
+        (save)="tosModalSaved($event)"
+        #TOSAgreeComponentModal
+></as-modal-tos-agree>
+
+<as-modal-alert
+        [alertText]="alertText"
+        #AlertComponent
+></as-modal-alert>
+
+AlertComponent
+<pre>
+    {{ user | json }}
+</pre>
+<pre>
+    {{ payPeriod | json }}
+</pre>

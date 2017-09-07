@@ -1,0 +1,190 @@
+<as-loading *ngIf="waitingForAuthentication && user"></as-loading>
+<div *ngIf="!waitingForAuthentication && user">
+    <h2>Welcome back, {{ user.first_name }}!</h2>
+
+    <div class="col-md-6" *ngIf="!ptoNonExistent">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">PTO / Sick Day Accrual for {{ pto.year }}</h4>
+            </div>
+            <div class="panel-body table-responsive">
+                <as-loading *ngIf="ptoLoading || sickDayLoading"></as-loading>
+                <div *ngIf="!ptoLoading && !sickDayLoading" class="">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Agreed</th>
+                                <th>Accrued</th>
+                                <th>Used</th>
+                                <th>Available</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>PTO</th>
+                                <td>{{ pto.total_agreed }} days</td>
+                                <td>{{ pto.days }} days</td>
+                                <td>{{ pto.total_used }} days</td>
+                                <td>{{ pto.total_remaining }} days
+                                    <!--<i class="fa fa-question-circle pull-right" aria-hidden="true" title="Available days can be negative throughout the year, but ensure that by the end of the year you have 0 or a positive number"></i>-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Sick Days</th>
+                                <td>{{ sickDay.total_agreed }} days</td>
+                                <td>{{ sickDay.days }} days</td>
+                                <td>{{ sickDay.total_used }} days</td>
+                                <td>{{ sickDay.total_remaining }} days
+                                    <!--<i class="fa fa-question-circle pull-right" aria-hidden="true" title="Available days can be negative throughout the year, but ensure that by the end of the year you have 0 or a positive number"></i>-->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+    <div class="col-md-12" *ngIf="user.userprofile.is_approver">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">My Approvals <span
+                        class="badge badge-default">{{ myPayPeriodsToApprove.length }}</span>
+                    <button class="btn btn-primary" (click)="approveSelected()" [disabled]="!atLeastOneSelectedForApprovalBtn">Approve Selected</button>
+                </h4>
+            </div>
+            <div class="panel-body table-responsive" style="padding: 0;">
+                <as-loading *ngIf="myPayPeriodsToApproveLoading"></as-loading>
+                <div *ngIf="!myPayPeriodsToApproveLoading">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="col-md-1">
+                                <input
+                                        type="checkbox"
+                                        title="select all pay periods to approve"
+                                        [ngModel]="selectedAllPayPeriods"
+                                        (click)="toggleSelectAllPayPeriods()"
+                                        id="toggleSelectAllPayPeriods" /> <label style="margin-bottom: 0px;" for="toggleSelectAllPayPeriods">Select All</label>
+                            </th>
+                            <th class="col-md-4">Name</th>
+                            <th class="col-md-3">Job</th>
+                            <th class="col-md-2">Period</th>
+                            <th class="col-md-2">Hours</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let period of myPayPeriodsToApprove; let index = index"
+                            style="cursor: pointer;"
+                            class=""
+                        >
+                            <td><input type="checkbox" title="select pay period" [(ngModel)]="selectedPayPeriodsToApprove[index]" (click)="setToNotAllSelected()"/></td>
+                            <td class="">
+                                <a [routerLink]="['/pay-period/' + period.id + '/work-times']">
+                                    {{ period.user.getName() }}
+                                </a>
+                            </td>
+                            <td class="">
+                                {{ period.job.job_title }}
+                            </td>
+                            <td class="">
+                                {{ period.start_date | date: 'MM/dd' }} - {{ period.end_date | date: 'MM/dd' }}
+                            </td>
+                            <td class="">
+                                {{ period.total_hours }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">My Open Timesheets <span
+                        class="badge badge-default">{{ myOpenPayPeriods.length }}</span></h4>
+            </div>
+            <div class="panel-body table-responsive" style="padding: 0;">
+                <as-loading *ngIf="myOpenPayPeriodsLoading"></as-loading>
+                <div *ngIf="!myOpenPayPeriodsLoading">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="col-md-6">Job</th>
+                            <th class="col-md-3">Period</th>
+                            <th class="col-md-3">Hours</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let period of myOpenPayPeriods"
+                            style="cursor: pointer;"
+                            class=""
+                        >
+                            <td class="">
+                                <a [routerLink]="['/pay-period/' + period.id + '/work-times']">
+                                    {{ period.job.job_title }}
+                                </a>
+                            </td>
+                            <td class="">
+                                {{ period.start_date | date: 'MM/dd' }} - {{ period.end_date | date: 'MM/dd' }}
+                            </td>
+                            <td class="">
+                                {{ period.total_hours }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">My Timesheets Pending Approval <span class="badge badge-default">{{ myPayPeriodsPendingApproval.length }}</span>
+                </h4>
+            </div>
+            <div class="panel-body table-responsive" style="padding: 0;">
+                <as-loading *ngIf="myPayPeriodsPendingApprovalLoading"></as-loading>
+                <div *ngIf="!myPayPeriodsPendingApprovalLoading">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="col-md-6">Job</th>
+                            <th class="col-md-3">Period</th>
+                            <th class="col-md-3">Hours</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let period of myPayPeriodsPendingApproval"
+                            style="cursor: pointer;"
+                            class=""
+                        >
+                            <td class="">
+                                <a [routerLink]="['/pay-period/' + period.id + '/work-times']">
+                                    {{ period.job.job_title }}
+                                </a>
+                            </td>
+                            <td class="">
+                                {{ period.start_date | date: 'MM/dd' }} - {{ period.end_date | date: 'MM/dd' }}
+                            </td>
+                            <td class="">
+                                {{ period.total_hours }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

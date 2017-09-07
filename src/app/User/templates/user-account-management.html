@@ -1,0 +1,50 @@
+<div class="container inner-container">
+    <div class="row">
+        <label class="headline">User Account</label>
+    </div>
+    <br/> <br/>
+    <div class="row">
+        <form method="POST" onsubmit="return false" enctype="multipart/form-data">
+            <div class="col-lg-8">
+                <div class="form-group">
+                    <label for="country_name">Country</label>
+                    <select class="form-control" id="country_name"
+                            [(ngModel)]="country" name="country"
+                            placeholder="Please select">
+                        <option value="" selected disabled>Please select</option>
+
+                    </select>
+                    {{country}}
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" class="form-control" id="phone"
+                           [(ngModel)]="phone_number" name="phone_numbner">
+                    {{phone_number}}
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="form-group">
+                    <label for="phone">Address</label>
+                    <input type="text" class="form-control" id="Address"
+                           [(ngModel)]="user_address" name="user_address">
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="form-group">
+                    <label for="image">Upload Profile Image</label>
+                    <input type="file" class="form-control" id="image"
+                      (change)="getFileAsBase64()" name="profile_image">
+                </div>
+            </div>
+            <br/><br/>
+            <div class="col-lg-8">
+                <button type="submit" (click)="saveUserAccountChanges()" class="btn btn-success">Save</button>
+            </div>
+            <br/>
+        </form>
+    </div>
+    <br/>
+</div>

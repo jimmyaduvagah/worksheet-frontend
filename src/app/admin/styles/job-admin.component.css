@@ -1,0 +1,42 @@
+.selected {
+    background-color: #CFD8DC !important;
+    color: white;
+  }
+
+.btnTextAlign {
+  text-align: left;
+}
+
+  .userlist {
+    margin: 0 0 2em 0;
+    list-style-type: none;
+    padding: 0;
+    width: 35em;
+  }
+  .userlist li {
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    background-color: #EEE;
+    margin: .9em;
+    padding: .4m 0;
+    height: 2.6em;
+    border-radius: 5px;
+  }
+  .userlist li.selected:hover {
+    background-color: #BBD8DC !important;
+    color: white;
+  }
+  .userlist li:hover {
+    color: #607D8B;
+    background-color: #DDD;
+    left: .1em;
+  }
+  .userlist .text {
+    position: relative;
+    top: -3px;
+  }
+
+  .headline {
+    color: 	#191970;
+}

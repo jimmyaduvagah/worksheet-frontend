@@ -1,0 +1,30 @@
+@import 'bootstrap';
+@import 'variables';
+@import 'mixins';
+@import 'functions';
+@import 'fonts';
+@import 'overrides';
+@import 'module';
+
+@import '../../app/pay-periods/styles/pay-period-list';
+@import '../../app/pay-periods/styles/pay-period';
+
+@import '../../app/jobs/styles/jobs';
+@import '../../app/jobs/styles/job';
+@import '../../app/jobs/styles/job-list-item';
+
+@import '../../app/work-times/styles/work-time-list';
+@import '../../app/work-times/styles/work-time-reasons';
+@import '../../app/work-times/styles/work-time';
+@import '../../app/work-times/styles/hours-bar';
+
+@import '../../app/pto/styles/pto';
+@import '../../app/sick_day/styles/sick_day';
+
+body {
+  padding-top: 70px;
+}
+
+.clear {
+  clear: both;
+}

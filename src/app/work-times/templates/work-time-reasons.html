@@ -1,0 +1,25 @@
+<!--<div class="dropdown">-->
+    <!--<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" [disabled]="disabled">-->
+        <!--{{ buttonText }}-->
+        <!--<span class="caret"></span></button>-->
+    <!--<ul class="dropdown-menu" *ngIf="!disabled">-->
+        <!--<li-->
+            <!--*ngFor="let reason of workTimeReasonList; let index = index"-->
+            <!--(click)="setReason(reason)"-->
+            <!--[class.active]="reason.id == value">-->
+            <!--<a>{{reason.name}}</a>-->
+        <!--</li>-->
+        <!--<li (click)="setReason(null)"><a>- - - - - -</a></li>-->
+    <!--</ul>-->
+<!--</div>-->
+<select (change)="updatedFromSelect($event)" [disabled]="disabled" tabindex="-1">
+    <option
+            [selected]="null == value"
+            [value]="null"
+    >- - - - -</option>
+    <option
+            *ngFor="let reason of workTimeReasonList; let index = index"
+            [selected]="reason.id == value"
+            [value]="reason.id"
+    >{{ reason.name }}</option>
+</select>

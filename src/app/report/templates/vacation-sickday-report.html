@@ -1,0 +1,56 @@
+<ol class="breadcrumb">
+    <li><a [routerLink]="['/admin/dashboard']">Admin</a></li>
+    <li><a [routerLink]="['/admin/vacation-sickday-report']">Vacation Sickday Report</a></li>
+</ol>
+<as-loading *ngIf="loading"></as-loading>
+<div class="container-fluid" *ngIf="!loading">
+    <div class="row">
+        <div class="col-sm-12  col-md-12 col-lg-12">
+            <div class="form-group">
+                <select class="form-control" [(ngModel)]="year" (change)="reportYearChanged()">
+                    <option *ngFor="let option of yearList" [value]="option">{{ option }}</option>
+                </select>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th (click)="setOrder('job_id')">Job <span *ngIf="orderField == 'job_id'"><i class="fa" [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}" aria-hidden="true"></i></span></th>
+                        <th (click)="setOrder('user_id')">User <span *ngIf="orderField == 'user_id'"><i class="fa" [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}" aria-hidden="true"></i></span></th>
+                        <th (click)="setOrder('first_name')">First Name <span *ngIf="orderField == 'first_name'"><i class="fa" [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}" aria-hidden="true"></i></span></th>
+                        <th (click)="setOrder('last_name')">Last Name <span *ngIf="orderField == 'last_name'"><i class="fa" [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}" aria-hidden="true"></i></span></th>
+                        <th (click)="setOrder('sick_days')">Sick Days <span *ngIf="orderField == 'sick_days'"><i class="fa" [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}" aria-hidden="true"></i></span></th>
+                        <th (click)="setOrder('vacation_days')">Vacation Days <span *ngIf="orderField == 'vacation_days'"><i class="fa" [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}" aria-hidden="true"></i></span></th>
+                        <th (click)="setOrder('country_name')">Country <span *ngIf="orderField == 'country_name'"><i class="fa" [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}" aria-hidden="true"></i></span></th>
+                        <th (click)="setOrder('employee_type')">Employee Type <span *ngIf="orderField == 'employee_type'"><i class="fa" [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}" aria-hidden="true"></i></span></th>
+                        <th (click)="setOrder('pay_type')">Pay Type <span *ngIf="orderField == 'pay_type'"><i class="fa" [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}" aria-hidden="true"></i></span></th>
+                    </tr>
+                    <tr>
+                        <th><input class="form-control" [(ngModel)]="searchObj.job_id" (change)="search()" /></th>
+                        <th><input class="form-control" [(ngModel)]="searchObj.user_id" (change)="search()" /></th>
+                        <th><input class="form-control" [(ngModel)]="searchObj.first_name" (change)="search()" /></th>
+                        <th><input class="form-control" [(ngModel)]="searchObj.last_name" (change)="search()" /></th>
+                        <th><input class="form-control" [(ngModel)]="searchObj.sick_days" (change)="search()" /></th>
+                        <th><input class="form-control" [(ngModel)]="searchObj.vacation_days" (change)="search()" /></th>
+                        <th><input class="form-control" [(ngModel)]="searchObj.country_name" (change)="search()" /></th>
+                        <th><input class="form-control" [(ngModel)]="searchObj.employee_type" (change)="search()" /></th>
+                        <th><input class="form-control" [(ngModel)]="searchObj.pay_type" (change)="search()" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of reportList">
+                        <td><a [routerLink]="['/jobs/', item.job_id]">{{ item.job_id }}</a></td>
+                        <td>{{ item.user_id }}</td>
+                        <td>{{ item.first_name }}</td>
+                        <td>{{ item.last_name }}</td>
+                        <td>{{ item.sick_days?item.sick_days:0 }}</td>
+                        <td>{{ item.vacation_days?item.vacation_days:0 }}</td>
+                        <td>{{ item.country_name }}</td>
+                        <td>{{ item.employee_type }}</td>
+                        <td>{{ item.pay_type }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

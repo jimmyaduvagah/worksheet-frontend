@@ -1,0 +1,205 @@
+<ol class="breadcrumb">
+    <li><a [routerLink]="['/admin/dashboard']">Admin</a></li>
+    <li><a [routerLink]="['/admin/jobs']">Jobs</a></li>
+    <li class="active " *ngIf="!loading" >
+        {{breadCrumbJobTitle}}
+    </li>
+</ol>
+<div *ngIf="!loading" class="container inner-container">
+    <div class="row">
+
+    </div>
+    <div class="row">
+    </div> <br/>
+     <form onsubmit="return false"  #jobForm="ngForm">
+         <div id="divModalEmployee" class="row">
+             <div class="col-md-8">
+                 <div *ngIf="!userIsSelected" class="form-group">
+                     <button type="text" class="form-control btn-primary" data-toggle="modal"
+                             data-target="#myModalUser">Choose Employee
+                     </button>
+                 </div>
+                 <div class="modal fade" id="myModalUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                     <div class="modal-dialog" role="document">
+                         <div class="modal-content">
+                             <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                         aria-hidden="true">&times;</span></button>
+                                 <h4 class="modal-title" id="myModalLabelEmployees">Employees List</h4>
+                             </div>
+                             <div class="modal-body">
+                                 <ul class="userlist">
+                                     <li class="list-group-item"
+                                         *ngFor="let user of usersArray"
+                                         [class.selected]="user === selectedUser"
+                                         (click)="onSelectUser(user)">
+                                         Username: {{ user.username }} &nbsp;
+                                         First Name: {{ user.first_name }} &nbsp;
+                                         Last Name: {{ user.last_name }} &nbsp;
+                                         <br/>
+                                     </li>
+                                 </ul>
+                             </div>
+                             <div class="modal-footer">
+                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+         <div *ngIf="userIsSelected" class="row">
+             <div class="col-md-4">
+                 <div class="form-group">
+                     <label for="firstname">First Name</label>
+                     <input type="text" class="form-control" id="firstname"
+                      [(ngModel)]="job.user.first_name" name="first_name">
+                 </div>
+             </div>
+             <div class="col-md-4">
+                 <div class="form-group">
+                     <label for="lastname">Last Name</label>
+                     <input type="text" class="form-control" id="lastname"
+                     [(ngModel)]="job.user.last_name" name="last_name">
+                 </div>
+             </div>
+         </div>
+
+         <div id="divModalCompany" class="row">
+             <div class="col-md-8">
+                 <div *ngIf="!companyIsSelected" class="form-group">
+                     <button type="text" class="form-control btn-info" data-toggle="modal"
+                             data-target="#myModalCompany">Choose Company
+                     </button>
+                 </div>
+                 <div class="modal fade" id="myModalCompany" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                     <div class="modal-dialog" role="document">
+                         <div class="modal-content">
+                             <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                         aria-hidden="true">&times;</span></button>
+                                 <h4 class="modal-title" id="myModalLabelCompanies">Companies List</h4>
+                             </div>
+                             <div class="modal-body">
+                                 <ul class="userlist">
+                                     <li class="list-group-item"
+                                         *ngFor="let company of companyArray"
+                                         [class.selected]="company === selectedCompany"
+                                         (click)="onSelectCompany(company)">
+                                         Company Name: {{ company.name }} &nbsp;
+                                         <br/>
+                                     </li>
+                                 </ul>
+                             </div>
+                             <div class="modal-footer">
+                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+         <div class="row" *ngIf="!companyIsSelected">
+             <div class="col-md-8">
+                 <div class="form-group">
+                     <label for="title">Job Title</label>
+                     <input type="text" class="form-control" id="title" placeholder="Job Title">
+                 </div>
+             </div>
+         </div>
+         <div *ngIf="companyIsSelected" class="row">
+             <div class="col-md-4">
+                 <div class="form-group">
+                     <label for="jobTitle">Job Title</label>
+                     <input type="text" class="form-control" id="jobTitle"
+                     [(ngModel)]="job.job_title" name="job_title" required>
+                 </div>
+             </div>
+             <div class="col-md-4">
+                 <div class="form-group">
+                     <label for="companyname">Company Name</label>
+                     <input type="text" class="form-control" id="companyname"
+                     [(ngModel)]="job.company" name="company" required>
+                 </div>
+             </div>
+         </div>
+         <div class="row">
+             <div class="col-md-8">
+                 <div class="form-group">
+                     <label for="jobDescription">Job Description</label>
+                     <textarea type="text" class="form-control" id="jobDescription"
+                     [(ngModel)]="job.description" name="description"> </textarea>
+                 </div>
+             </div>
+         </div>
+
+         <br/>
+         <div class="row">
+             <div class="col-md-4">
+                 <div class="form-group">
+                     <label for="employmentType">Employment Type</label>
+                     <select class="form-control" id="employmentType" [(ngModel)]="job.employment_type"
+                     name="employment_type" required>
+                         <option value="CO">Contractor</option>
+                         <option value="EM">Employee</option>
+                     </select>
+                 </div>
+             </div>
+             <div class="col-md-4">
+                 <div class="form-group">
+                     <label for="payType">Pay Type</label>
+                     <!-- this is a temporal solution for the job.pay_type-->
+                     <select type="text" class="form-control" id="payType"
+                     [(ngModel)]="pay_type" name="pay_type" required>
+                         <option *ngFor="let payTypeItems of payTypeArray" [selected]="payTypeItems.name == 'Daily'">
+                             <b> {{payTypeItems.name}}</b>
+                         </option>
+                     </select>
+                 </div>
+             </div>
+         </div>
+         <div class="row">
+             <div class="col-md-4">
+                 <div class="form-group">
+                     <label for="payPeriodType">Pay Period Types</label>
+                     <select class="form-control" id="payPeriodType" [(ngModel)]="job.pay_period_type"
+                     name="pay_period_type" required onchange="say()">
+                         <option *ngFor="let payperiodtype of payPeriodTypeArray">
+                             <b> {{payperiodtype.name}}</b>
+                         </option>
+                     </select>
+                 </div>
+             </div>
+             <div class="col-md-4">
+                 <div class="form-group">
+                     <label for="workdayhours">Work Hours Per Day</label>
+                     <input type="number" class="form-control" id="workdayhours"
+                            [(ngModel)]="job.work_day_hours" name="work_day_hours" required>
+                 </div>
+             </div>
+         </div>
+         <div class="row">
+             <div class="col-md-4">
+                 <div class="form-group">
+                     <label for="startDate">Start Date</label>
+                     <input type="date" class="form-control" id="startDate"
+                            [(ngModel)]="job.start_date" name="start_date" required>
+                 </div>
+             </div>
+             <div class="col-md-4">
+                 <div class="form-group">
+                     <label for="endDate">End Dates</label>
+                     <input type="date" class="form-control" id="endDate"
+                           [(ngModel)]="job.end_date" name="end_date">
+                 </div>
+             </div>
+         </div>
+         <button (click)="doSave()" [disabled]="!jobForm.form.valid" class="btn btn-success">Save</button>
+    </form>
+</div> <br/> <br/>
+
+ <div class="row">
+        <div col-md-6></div>
+        <div col-md-6></div>
+ </div>

@@ -1,0 +1,17 @@
+<nav *ngIf="pagesArray">
+    <ul class="pagination">
+        <li>
+            <a (click)="goToPage(state.prev_offset)"  style="cursor:pointer;" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li *ngFor="let page of pagesArray"  style="cursor:pointer;" [class.active]="currentOffset == page.offset">
+            <a (click)="goToPage(page.offset)">{{ page.page }}</a>
+        </li>
+        <li>
+            <a (click)="goToPage(state.next_offset)" style="cursor:pointer;" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

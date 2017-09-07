@@ -1,0 +1,187 @@
+<ol class="breadcrumb">
+    <li><a [routerLink]="['/admin/dashboard']">Admin</a></li>
+    <li class="active " *ngIf="!loading">
+        {{ breadCrumbJobTitle }}
+    </li>
+</ol>
+<div class="container">
+    <div class="row">
+        <form *ngIf="!loading" onsubmit="return false;" #userForm="ngForm">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text"
+                               class="form-control" id="first_name"
+                               required
+                               [(ngModel)]="user.first_name" name="first_name"
+                        />
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text"
+                               class="form-control" id="last_name"
+                               required
+                               [(ngModel)]="user.last_name" name="last_name"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="userName">User Name</label>
+                        <input type="text"
+                               class="form-control" id="userName"
+                               required
+                               [(ngModel)]="user.username" name="userName"
+                        >
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text"
+                               class="form-control" id="email"
+                               required
+                               [(ngModel)]="user.email" name="email"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Is Approver</label>
+                <input type="checkbox" name="is_approver" [(ngModel)]="user.userprofile.is_approver"/>
+            </div>
+            <div class="form-group">
+                <label>Is Admin</label>
+                <input type="checkbox" name="is_admin" [(ngModel)]="user.userprofile.is_admin"/>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="text"
+                               class="form-control" id="phoneNumber"
+                               required
+                               [(ngModel)]="user.userprofile.phone_number" name="phoneNumber"
+                        />
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="addressLine1">Address Line 1</label>
+                        <input type="text"
+                               class="form-control" id="addressLine1"
+                               required
+                               [(ngModel)]="user.userprofile.address_line_1"
+                               name="addressLine1"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="addressLine2">Address Line 2</label>
+                        <input type="text"
+                               class="form-control" id="addressLine2"
+                               required
+                               [(ngModel)]="user.userprofile.address_line_2" name="addressLine2"
+                        />
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="addressLine3">Address Line 3</label>
+                        <input type="text"
+                               class="form-control" id="addressLine3"
+                               required
+                               [(ngModel)]="user.userprofile.address_line_3"
+                               name="addressLine3"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="addressLine4">Address Line 4</label>
+                        <input type="text"
+                               class="form-control" id="addressLine4"
+                               required
+                               [(ngModel)]="user.userprofile.address_line_4" name="addressLine4"
+                        />
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="addressCity">Address City</label>
+                        <input type="text"
+                               class="form-control" id="addressCity"
+                               required
+                               [(ngModel)]="user.userprofile.address_city"
+                               name="addressCity"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="addressZip">Address Zip</label>
+                        <input type="text"
+                               class="form-control" id="addressZip"
+                               required
+                               [(ngModel)]="user.userprofile.address_zip" name="addressZip"
+                        />
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="addressState">Address State</label>
+                        <select type="text" class="form-control" id="addressState"
+                                [(ngModel)]="user.userprofile.address_state" name="addressState" required>
+                            <option *ngFor="let item of stateArray">
+                                <b> {{ item.name }}</b>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="addressCountry">Address Country</label>
+                        <ng2-completer id="addressCountry" class="completer"
+                                       [(ngModel)]="addressCountrySearchStr"
+                                       (ngModelChange)="addressCountrySearchStrChanged($event)"
+                                       (selected)="addressCountryWasSelected($event)"
+                                       [dataService]="addressCountrydataService"
+                                       [minSearchLength]="0"
+                                       [ngModelOptions]="{standalone: true}">
+                        </ng2-completer>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="Company">Company</label>
+                        <ng2-completer name="Company" id="Company" class="completer"
+                                       [(ngModel)]="companySearchStr"
+                                       (ngModelChange)="companySearchStrChanged($event)"
+                                       (selected)="companyWasSelected($event)"
+                                       [dataService]="companydataService"
+                                       [minSearchLength]="0"
+                                       [ngModelOptions]="{standalone: true}">
+                        </ng2-completer>
+                    </div>
+                </div>
+
+            </div>
+            <button type="submit" class="btn btn-primary" (click)="save()">Save</button>
+        </form>
+    </div>
+</div>

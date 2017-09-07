@@ -1,0 +1,32 @@
+.borderLess {
+    border: none;
+}
+
+textarea {
+    resize: none;
+    overflow:hidden;
+}
+
+.work-time-day .loading-spinner {
+    position: absolute !important;
+    left: 1px;
+    display: block;
+}
+
+.msg {
+    margin-top: 10px;
+}
+.msg:nth-child(1) {
+    margin-top: 0px;
+}
+
+.panel-warning .panel-footer {
+    background-color: $alert-warning-bg;
+}
+.panel-danger .panel-footer {
+     background-color: $alert-danger-bg;
+}
+
+.panel select {
+    width: 100%;
+}

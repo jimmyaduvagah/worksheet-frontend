@@ -1,0 +1,41 @@
+import { BaseModel } from '../../bases/models/BaseModel';
+import { User } from '../../User/models/user';
+import { Pto } from './pto';
+import { Job } from '../../jobs/models/job';
+import { WorkTime } from '../../work-times/models/work-time';
+import { PayPeriod } from '../../pay-periods/models/pay-period';
+
+export class PtoUse extends BaseModel {
+
+    public user: User;
+    public user_id: number;
+    public work_time: WorkTime;
+    public work_time_id: number;
+    public pay_period: PayPeriod;
+    public pay_period_id: number;
+    public pto: Pto;
+    public pto_id: number;
+    public days: number = 0;
+    public month: number = 0;
+    public year: number = 0;
+
+    constructor(obj: Object) {
+        super();
+        for (let field in obj) {
+            if (obj.hasOwnProperty(field)) {
+                if (field === 'user' && typeof obj[field] !== 'number') {
+                    this[field] = new User(obj[field]);
+                } else if (field === 'pto' && typeof obj[field] !== 'number') {
+                    this[field] = new Pto(obj[field]);
+                } else if (field === 'pay_period' && typeof obj[field] !== 'number') {
+                    this[field] = new PayPeriod(obj[field]);
+                } else if (field === 'work_time' && typeof obj[field] !== 'number') {
+                    this[field] = new WorkTime(obj[field]);
+                } else {
+                    this[field] = obj[field];
+                }
+            }
+        }
+    }
+
+}

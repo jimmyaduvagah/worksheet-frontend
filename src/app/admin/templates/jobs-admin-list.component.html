@@ -1,0 +1,85 @@
+<ol class="breadcrumb">
+    <li><a [routerLink]="['/admin/dashboard']">Admin</a></li>
+    <li class="active"> Jobs Listings</li>
+</ol>
+
+<br/>
+<div class="container-fluid">
+    <div class="col-sm-12  col-md-12 col-lg-12 ">
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+                <div class="pull-left col-sm-4"><h3 style="margin: 0;">Jobs</h3></div>
+                <div class="pull-right col-sm-4">
+                    <div class="input-group stylish-input-group">
+                        <input type="text" class="form-control" [ngModel]="searchTerm" (change)="setSearchTerm($event)"
+                               placeholder="Search Name" (keyup.enter)="getJobs()">
+                        <span class="input-group-addon" style="cursor: pointer;" (click)="getJobs()">
+                            <span class="fa fa-search"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <as-loading *ngIf="loading"></as-loading>
+                <div *ngIf="!loading">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th (click)="setOrder('user')">Name <span *ngIf="orderField == 'user'"><i
+                                    class="fa"
+                                    [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}"
+                                    aria-hidden="true"></i></span></th>
+                            <th (click)="setOrder('job_title')">Job Title <span
+                                    *ngIf="orderField == 'job_title'"><i class="fa"
+                                                                         [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}"
+                                                                         aria-hidden="true"></i></span></th>
+                            <th (click)="setOrder('company')">Company <span
+                                    *ngIf="orderField == 'company'"><i class="fa"
+                                                                           [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}"
+                                                                           aria-hidden="true"></i></span></th>
+                            <th (click)="setOrder('start_date')">Start Date <span
+                                    *ngIf="orderField == 'start_date'"><i class="fa"
+                                                                          [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}"
+                                                                          aria-hidden="true"></i></span></th>
+                            <th (click)="setOrder('end_date')">End Date <span
+                                    *ngIf="orderField == 'end_date'"><i class="fa"
+                                                                        [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}"
+                                                                        aria-hidden="true"></i></span></th>
+                            <th (click)="setOrder('is_ended')">Is Ended <span
+                                    *ngIf="orderField == 'is_ended'"><i class="fa"
+                                                                        [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}"
+                                                                        aria-hidden="true"></i></span></th>
+                            <th (click)="setOrder('employment_type')">Type Of Employment <span
+                                    *ngIf="orderField == 'employment_type'"><i class="fa"
+                                                                               [ngClass]="{'fa-caret-down': orderDir == 0, 'fa-caret-up': orderDir == 1}"
+                                                                               aria-hidden="true"></i></span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let job of jobsResponse.results">
+                            <td> {{ job.user }}</td>
+                            <td> {{ job.job_title }}</td>
+                            <td> {{ job.company }}</td>
+                            <td> {{ job.start_date }}</td>
+                            <td> {{ job.end_date }}</td>
+                            <td> {{ job.is_ended | asBoolean }}</td>
+                            <td> {{ job.employment_type | asEmploymentType }}</td>
+                            <td class="text-right">
+                                <a class="btn btn-default" [routerLink]="['/admin/job/' + job.id]">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <a class="btn btn-default" [routerLink]="['/jobs/' + job.id]">
+                                    <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <as-pagination *ngIf="!loading" [state]="jobsResponse.state" (pageChange)="setOffset($event)" [currentOffset]="offset" ></as-pagination>
+        </div>
+    </div>
+</div>

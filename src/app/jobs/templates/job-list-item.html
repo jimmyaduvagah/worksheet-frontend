@@ -1,0 +1,7 @@
+<div class="job-list-item">
+    <div class="col-sm-6">
+        <a [routerLink]="['/jobs', job.id]">{{ job.job_title }}</a>
+        <span class="badge" *ngIf="job.is_ended">Job Finished</span>
+    </div>
+    <div class="col-sm-6">{{ job.company }}</div>
+</div>

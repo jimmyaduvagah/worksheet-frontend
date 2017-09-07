@@ -1,0 +1,16 @@
+.floating-div {
+    display: inline-block;
+    margin-right: 30px;
+}
+
+.headline {
+    color: 	#191970;
+}
+
+.yrmonth {
+     max-width: 150px;
+}
+
+#payperiod {
+   min-width: 150px;
+}
