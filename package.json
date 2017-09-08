@@ -1,8 +1,8 @@
 {
-  "name": "time-stream-ng2",
+  "name": "woorksheet-ng2",
   "version": "1.0.0",
   "author": "Prospect 33",
-  "description": "Time tracking by Prospect 33.",
+  "description": "worksheet by Aduvagah and others",
   "main": "src/tmp/app/main.js",
   "repository": {
     "type": "git",
